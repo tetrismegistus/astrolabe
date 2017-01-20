@@ -107,10 +107,8 @@ class Day(object):
         return planet_table
 
     def current_ruler(self):
-
         current_time = datetime.today().replace(tzinfo=self.time_zone)
         merged_chart = self.day_chart + self.night_chart
-
         for row in merged_chart:
             if row[1] <= current_time <= row[2]:
                 next_index = (self.find_hour_index(row[0]) + 1) % 7
