@@ -1,0 +1,52 @@
+#!/usr/bin/env python
+
+import astrolabe
+from datetime import date
+from datetime import datetime
+
+
+def print_html(hour_color, day_color, day_ruler, date_object, hour_ruler, current_time):
+    print('<html>                                       ')
+    print('<head>                                       ')
+    print('<style>                                      ')
+    print('table{                                       ')
+    print('    border: none;                            ')
+    print('    width: 100%;                             ')
+    print('}                                            ')
+    print('td{                                          ')
+    print('    width:50%;                               ')
+    print('    text-align: center;                      ')
+    print('    border: 0px                              ')
+    print('}                                            ')
+    print('table#time tr:nth-child(even){               ')
+    print('    background-color:{};                     '.format(hour_color))
+    print('}                                            ')
+    print('table#time tr:nth-child(odd) {               ')
+    print('        background-color:{};                 '.format(day_color))
+    print('}                                            ')
+    print('</style>                                     ')
+    print('<title>                                      ')
+    print('</title>                                     ')  
+    print('</head>                                      ')
+    print('<body>                                       ')
+    print('<table id="time" style="width:100%">         ')
+    print('  <col width="%70"> 				')  
+    print('  <col width="%30">                          ')
+    print('  <tr>                                       ')
+    print('    <td><p><img src="{}"><p></td>            '.format(day_ruler))
+    print('    <td><p style="font-size:60px">{}</p></td>'.format(date_object.strftime('%m-%d-%y')))
+    print('  </tr>                                      ')
+    print('  <tr>                                       ')
+    print('    <td><img src="{}"></td>                  '.format(hour_ruler))
+    print('    <td><p style="font-size:90px">{}</p></td>'.format(current_time.strftime('%H:%M')))
+    print('  </tr>                                      ')
+    print('  </table>                                   ')
+    print('</body>                                      ')
+    print('</html>                                      ')
+
+
+day = astrolabe.Day()
+datetime_object=datetime(date.today().year, date.today().month, date.today().day, 12)
+current_ruler = day.current_ruler()[0]
+timestamp = datetime.now().time()
+print_html(current_ruler.color, day.day_ruler.color, day.day_ruler.name, datetime_object, current_ruler.name, timestamp)

@@ -116,8 +116,6 @@ class Day(object):
                 next_index = (self.find_hour_index(row[0]) + 1) % 7
                 return [row[0], row[2] + timedelta(microseconds=1), self.HOUR_RULERS[next_index]]  # ruler, end of hour
 
-
-
     def set_moon_phase(self):
         moon = ephem.Moon()
         moon.compute(self.observer)
@@ -140,7 +138,3 @@ class Day(object):
             return 'Last Quarter'
         elif 22 <= lunation <= 29:
             return 'Waning Crescent'
-
-
-d = Day()
-d.current_ruler()

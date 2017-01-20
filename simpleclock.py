@@ -43,6 +43,7 @@ class Clock(QWidget):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.Time)
         self.timer.start(1000)
+
         layout = QGridLayout()
         layout.addWidget(self.date_label, 0, 0)
         layout.addWidget(self.date_lcd, 0, 1)
@@ -54,6 +55,7 @@ class Clock(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setColumnStretch(0, 1)
         layout.setColumnStretch(1, 3)
+
         self.setLayout(layout)
         self.Time()
 
