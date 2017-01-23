@@ -63,6 +63,7 @@ class Day(object):
         for i in range(len(markers)):
             utc = datetime.strptime(markers[i], '%Y/%m/%d %H:%M:%S')
             markers[i] = self.convert_zone(utc, self.utc_zone, self.time_zone)
+            markers[i] = markers[i].replace(second=0, microsecond=0)
         return markers
 
     def find_hour_length(self, end, start):
@@ -105,14 +106,6 @@ class Day(object):
             start = end 
             hour_index = (hour_index + 1) % 7
         return planet_table
-
-    def current_ruler(self):
-        current_time = datetime.today().replace(tzinfo=self.time_zone)
-        merged_chart = self.day_chart + self.night_chart
-        for row in merged_chart:
-            if row[1] <= current_time <= row[2]:
-                next_index = (self.find_hour_index(row[0]) + 1) % 7
-                return [row[0], row[2] + timedelta(microseconds=1), self.HOUR_RULERS[next_index]]  # ruler, end of hour
 
     def set_moon_phase(self):
         moon = ephem.Moon()

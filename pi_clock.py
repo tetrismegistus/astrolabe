@@ -22,7 +22,7 @@ class ClockLabel(QLabel):
     def __init__(self):
         super(ClockLabel, self).__init__()
         self.setAlignment(Qt.AlignCenter)
-        self.setFont(QFont('Arial', 50, QFont.Bold))
+        self.setFont(QFont('Arial', 90, QFont.Bold))
 
     def update_label(self, background, foreground, label_string):
         style_string = 'QLabel { background-color : ' + background + '; color : ' + foreground + '; }'
@@ -57,15 +57,30 @@ class Clock(QWidget):
         self.setLayout(layout)
         self.Time()
 
-    def Time(self):
-        now = self.calendar.convert_zone(datetime.now(), self.calendar.time_zone, self.calendar.time_zone)
-        if now <= self.calendar.day_chart[0][1]:
-            day = date.today() - timedelta(hours=24)
-            day = day.day
+    def current_ruler(self):
+        current_time = self.calendar.convert_zone(datetime.now(), self.calendar.time_zone, self.calendar.time_zone)
+        day = int(date.today().day)
+        if current_time <= self.calendar.day_chart[0][1]:
+            day -= 1
+            self.calendar.set_date(datetime_object=datetime(date.today().year, date.today().month, day, 12))
+        elif current_time >= self.calendar.night_chart[11][2]:
             self.calendar.set_date(datetime_object=datetime(date.today().year, date.today().month, day, 12))
 
-        current_ruler = self.calendar.current_ruler()
+        merged_chart = self.calendar.day_chart + self.calendar.night_chart
+        for row in merged_chart:
+            if row[1] <= current_time <= row[2]:
+                next_index = (self.calendar.find_hour_index(row[0]) + 1) % 7
+                return [row[0], row[2], self.calendar.HOUR_RULERS[next_index]]
+
+        print(current_time)
+        for x in merged_chart:
+            print(str(x[1]), str(x[2]))
+
+    def Time(self):
+        current_ruler = self.current_ruler()
+
         background_color = current_ruler[0].bg_color
+
         foreground_color = current_ruler[0].fg_color
         self.hour_lcd.update_display(background_color, foreground_color, time.strftime('%H:%M'))
         self.hour_label.update_label(background_color, foreground_color, current_ruler[0].unicode)
