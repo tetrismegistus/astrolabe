@@ -1,0 +1,9 @@
+\documentclass[twoside,12pt] {exam}
+\usepackage{booktabs}
+\usepackage{wasysym}
+\usepackage{caption}
+\captionsetup{labelformat=empty}
+\chead{}
+\begin{document}
+INSERTDOCUMENT
+\end{document}
