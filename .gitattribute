@@ -1,0 +1,4 @@
+*.tex linguist-vendored
+doctemplate linguist-vendored
+pagetemplate linguist-vendored
+*.pdf linguist-vendored
