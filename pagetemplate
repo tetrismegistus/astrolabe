@@ -1,5 +1,6 @@
 \lhead{ CITY \\ DATE DAYRULER }
 \rhead{Phase: PHASE \\ Solar Noon: SOLARNOON }
+\pagenumbering{gobble}
 \begin{table}[ht]
 \medskip
 \caption{Planetary Hours}
@@ -31,6 +32,7 @@ Ritual Performed:\\
 Performance:\\
 \fillwithgrid{3.8in}
 \newpage
+\pagenumbering{gobble}
 Results:\\
 \fillwithgrid{8.4in}
 \newpage
