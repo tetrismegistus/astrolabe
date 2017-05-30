@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from datetime import date, datetime
 import astrolabe
 
@@ -28,5 +30,5 @@ def report(day):
     print('Moon Phase')
     print(day.moon_phase)
 
-day = astrolabe.Day(datetime_object=datetime(date.today().year, date.today().month, 21, 12))
+day = astrolabe.Day(datetime.now())
 report(day)

@@ -1,14 +1,15 @@
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import astrolabe
 import journalpage
 
-MONTH = 2
-DATE = 1
-DAY = astrolabe.Day(datetime_object=datetime(date.today().year, MONTH, DATE, 12))
+month = 6
+datetime_obj = datetime(datetime.now().year, month, 1, 12)
+DAY = astrolabe.Day(datetime_object=datetime_obj)
 journal = ''
-for loopday in range(1, 29):
-    DAY.set_date(datetime_object=datetime(date.today().year, MONTH, loopday, 12))
+while datetime_obj.month == month:
     journal += journalpage.JournalPage(astroday=DAY).page
+    datetime_obj += timedelta(1)
+    DAY.set_date(datetime_object=datetime_obj)
 
 
-journalpage.write_journal(journal, output_file='february.tex')
+journalpage.write_journal(journal, output_file='june.tex')

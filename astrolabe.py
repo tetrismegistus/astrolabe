@@ -1,10 +1,15 @@
  #!/usr/bin/env python3
 
-import ephem
+import math 
 from collections import namedtuple
-from geopy.geocoders import Nominatim
 from datetime import datetime, timedelta, date
 from dateutil import tz
+import ephem
+from geopy.geocoders import GoogleV3 
+
+
+def nearest(items, pivot):
+    return min(items, key=lambda x: abs(x - pivot))
 
 
 class Day(object):
@@ -24,7 +29,7 @@ class Day(object):
                  datetime_object=datetime(date.today().year, date.today().month, date.today().day, 12),
                  location_string='Indianapolis, IN',
                  zone_string='America/Indianapolis'):
-        geo_locator = Nominatim()
+        geo_locator = GoogleV3()
         self.city = location_string
         self.location = geo_locator.geocode(self.city)
         self.time_zone = tz.gettz(zone_string)
@@ -110,22 +115,27 @@ class Day(object):
     def set_moon_phase(self):
         moon = ephem.Moon()
         moon.compute(self.observer)
-        next_new_moon = ephem.next_new_moon(self.observer.date)
-        prev_new_moon = ephem.previous_new_moon(self.observer.date)
-        lunation = round(((self.observer.date - prev_new_moon) / (next_new_moon - prev_new_moon)) * 29, 0)
-        if lunation == 1:
-            return 'New Moon'
-        elif 2 <= lunation <= 6:
-            return 'Waxing Crescent'
-        elif lunation == 7:
-            return 'First Quarter'
-        elif 8 <= lunation <= 13:
-            return 'Waxing Gibbous'
-        elif lunation == 14:
-            return 'Full Moon'
-        elif 13 <= lunation <= 20:
-            return 'Waning Gibbous'
-        elif lunation <= 21:
-            return 'Last Quarter'
-        elif 22 <= lunation <= 29:
-            return 'Waning Crescent'
+        current_date = self.observer.date
+        ref_date = current_date.datetime().date()
+        # I know this is ugly, but this is the most accurate way I could get a moon phase using 
+        # pyephem's moon phase lookup. other solutions involved estimating based on last new moon
+        # which kinda loses the accuracy of pyephem, which is why I chose the library in the first place.
+        # I am SURE there is more elegant way, and am totally open to suggestions
+        moon_cal = { ephem.next_new_moon(current_date).datetime().date()              : 'New',
+                     ephem.previous_new_moon(current_date).datetime().date()          : 'New',
+                     ephem.next_first_quarter_moon(current_date).datetime().date()    : 'First Quarter',
+                     ephem.previous_first_quarter_moon(current_date).datetime().date(): 'First Quarter',
+                     ephem.next_full_moon(current_date).datetime().date()             : 'Full',
+                     ephem.previous_full_moon(current_date).datetime().date()         : 'Full',
+                     ephem.next_last_quarter_moon(current_date).datetime().date()     : 'Last Quarter',
+                     ephem.previous_last_quarter_moon(current_date).datetime().date() : 'Last Quarter' }
+        if ref_date in moon_cal.keys():
+            return moon_cal[ref_date]
+        nearest_date = nearest(list(moon_cal.keys()), ref_date)
+        ref_phase = moon_cal[nearest_date]
+        cycle = ['New', 'Waxing Crescent', 'First Quarter', 'Waxing Gibbous', 'Full', 'Waning Gibbous', 'Last Quarter', 'Waning Crescent']
+        index = cycle.index(ref_phase)
+        if ref_date > nearest_date:
+            return cycle[(index + 1) % len(cycle)]
+        elif ref_date < nearest_date:
+            return cycle[(index - 1) % len(cycle)]

@@ -1,10 +1,13 @@
-from datetime import date, datetime
+from datetime import datetime, timedelta,date
 import astrolabe
 
-day = astrolabe.Day()
-day = astrolabe.Day(datetime_object=datetime(date.today().year, date.today().month, 1, 12))
+the_date = datetime(date.today().year, date.today().month, date.today().day, 12)
+calendar = astrolabe.Day()
+calendar = astrolabe.Day(the_date)
 
 print('Phase Calendar')
-for my_date in range(2, 32):
-    print(day.moon_phase, day.time, day.day_ruler[0])
-    day.set_date(datetime_object=datetime(date.today().year, date.today().month, my_date, 12))
+for day in range(365):    
+    if calendar.moon_phase != None:
+        print(calendar.moon_phase, calendar.time, calendar.day_ruler[0])
+    the_date += timedelta(1)
+    calendar.set_date(the_date)
