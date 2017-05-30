@@ -1,6 +1,5 @@
- #!/usr/bin/env python3
+# !/usr/bin/env python3
 
-import math 
 from collections import namedtuple
 from datetime import datetime, timedelta, date
 from dateutil import tz
@@ -121,14 +120,14 @@ class Day(object):
         # pyephem's moon phase lookup. other solutions involved estimating based on last new moon
         # which kinda loses the accuracy of pyephem, which is why I chose the library in the first place.
         # I am SURE there is more elegant way, and am totally open to suggestions
-        moon_cal = { ephem.next_new_moon(current_date).datetime().date()              : 'New',
-                     ephem.previous_new_moon(current_date).datetime().date()          : 'New',
-                     ephem.next_first_quarter_moon(current_date).datetime().date()    : 'First Quarter',
-                     ephem.previous_first_quarter_moon(current_date).datetime().date(): 'First Quarter',
-                     ephem.next_full_moon(current_date).datetime().date()             : 'Full',
-                     ephem.previous_full_moon(current_date).datetime().date()         : 'Full',
-                     ephem.next_last_quarter_moon(current_date).datetime().date()     : 'Last Quarter',
-                     ephem.previous_last_quarter_moon(current_date).datetime().date() : 'Last Quarter' }
+        moon_cal = {ephem.next_new_moon(current_date).datetime().date()              : 'New',
+                    ephem.previous_new_moon(current_date).datetime().date()          : 'New',
+                    ephem.next_first_quarter_moon(current_date).datetime().date()    : 'First Quarter',
+                    ephem.previous_first_quarter_moon(current_date).datetime().date(): 'First Quarter',
+                    ephem.next_full_moon(current_date).datetime().date()             : 'Full',
+                    ephem.previous_full_moon(current_date).datetime().date()         : 'Full',
+                    ephem.next_last_quarter_moon(current_date).datetime().date()     : 'Last Quarter',
+                    ephem.previous_last_quarter_moon(current_date).datetime().date() : 'Last Quarter'}
         if ref_date in moon_cal.keys():
             return moon_cal[ref_date]
         nearest_date = nearest(list(moon_cal.keys()), ref_date)
