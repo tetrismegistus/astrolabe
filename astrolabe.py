@@ -60,9 +60,6 @@ class Day(object):
 
     def set_sun_markers(self):
         sun = ephem.Sun()
-        transit = self.observer.next_transit(sun)
-        if transit.datetime().day > self.observer.datetime().day:
-            transit = self.observer.previous_transit(sun)
         markers = [str(self.observer.previous_rising(sun)),
                    str(self.observer.next_transit(sun)),
                    str(self.observer.next_setting(sun)),
@@ -71,8 +68,6 @@ class Day(object):
             utc = datetime.strptime(markers[i], '%Y/%m/%d %H:%M:%S')
             markers[i] = self.convert_zone(utc, self.utc_zone, self.time_zone)
             markers[i] = markers[i].replace(second=0, microsecond=0)
-        if markers[1].day > self.observer.datetime().date().day:
-
         return markers
 
     def find_hour_length(self, end, start):
