@@ -28,5 +28,5 @@ def report(day):
     print('Moon Phase')
     print(day.moon_phase)
 
-day = astrolabe.Day(datetime.now())
+day = astrolabe.Day()
 report(day)

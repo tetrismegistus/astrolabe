@@ -25,7 +25,7 @@ class Day(object):
     HOUR_RULERS = [SATURN, JUPITER, MARS, SOLAR, VENUS, MERCURY, LUNAR]
 
     def __init__(self,
-                 datetime_object=datetime(date.today().year, date.today().month, date.today().day, 12),
+                 datetime_object=datetime(date.today().year, date.today().month, date.today().day, 9),
                  location_string='Indianapolis, IN',
                  zone_string='America/Indianapolis'):
         geo_locator = GoogleV3()
@@ -59,6 +59,9 @@ class Day(object):
         self.observer.lat, self.observer.lon = str(self.location.latitude), str(self.location.longitude)
 
     def set_sun_markers(self):
+        # todo: this needs cleaned up.  returns the wrong date for transit if it is past solar noon
+        # in fact, I'm pretty sure all the markers have this problem.  the string conversion is totally
+        # unnecessary 
         sun = ephem.Sun()
         markers = [str(self.observer.previous_rising(sun)),
                    str(self.observer.next_transit(sun)),
