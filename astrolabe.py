@@ -4,7 +4,7 @@ from collections import namedtuple
 from datetime import datetime, timedelta, date
 from dateutil import tz
 import ephem
-from geopy.geocoders import GoogleV3 
+from geopy.geocoders import Nominatim
 
 
 def nearest(items, pivot):
@@ -28,7 +28,7 @@ class Day(object):
                  datetime_object=datetime(date.today().year, date.today().month, date.today().day, 9),
                  location_string='Indianapolis, IN',
                  zone_string='America/Indianapolis'):
-        geo_locator = GoogleV3()
+        geo_locator = Nominatim()
         self.city = location_string
         self.location = geo_locator.geocode(self.city)
         self.time_zone = tz.gettz(zone_string)
