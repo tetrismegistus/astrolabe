@@ -10,6 +10,7 @@ class Clock:
     def __init__(self):
         self.calendar = astrolabe.Day()
         self.text = PapirusTextPos(False, rotation=0)
+        self.text.partialUpdates = True
         self.Time()
 
     def current_ruler(self):
