@@ -11,6 +11,7 @@ class Clock:
         self.calendar = astrolabe.Day()
         self.text = PapirusTextPos(False, rotation=0)
         self.text.partialUpdates = True
+        self.text.Clear()
         self.Time()
 
     def current_ruler(self):
@@ -36,10 +37,10 @@ class Clock:
         current_ruler = self.current_ruler()
 
         date_string = '{} {}'.format(self.calendar.day_ruler.unicode, time.strftime('%m/%d'))
-        self.text.AddText(date_string, 10, 10, size=50, Id="date")
+        self.text.AddText(date_string, 10, 0, size=40, Id="date")
         hour_time = datetime.now().strftime('%H:%M')
         time_string = '{} {}'.format(current_ruler[0].unicode, hour_time)
-        self.text.AddText(time_string, 10, 100, size=50, Id="time")
+        self.text.AddText(time_string, 10, 50, size=40, Id="time")
         self.text.UpdateText("date", date_string)
         self.text.UpdateText("time", time_string)
         self.text.WriteAll()
